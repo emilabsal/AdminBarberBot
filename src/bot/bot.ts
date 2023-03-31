@@ -9,6 +9,8 @@ import {
 import { menu } from './menu';
 import { sequelize } from '../database';
 import User from '../database/models/User';
+import Journal from '../database/models/Journal';
+import Clients from '../database/models/Clients';
 
 type MyContext = Context & ConversationFlavor;
 type MyConversation = Conversation<MyContext>;
@@ -16,7 +18,10 @@ type MyConversation = Conversation<MyContext>;
 //Инициализация
 dotenv.config()
 const bot = new Bot<MyContext>(process.env.BOT_TOKEN);
-sequelize.sync()
+// sequelize.sync({ force: true })
+Journal.sync({ force: true })
+Clients.sync({ force: true })
+
 
 
 //middleware
@@ -41,7 +46,6 @@ bot.use(createConversation(writePassword));
 
 
 bot.command("start", async (ctx) => {
-
   await ctx.reply(`Приветствую, напишите пароль для входа`, { parse_mode: 'HTML' })
   await ctx.conversation.enter("writePassword");
 });

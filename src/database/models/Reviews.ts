@@ -1,11 +1,15 @@
-import { Model, InferAttributes, InferCreationAttributes, DataTypes } from 'sequelize';
+import { Model, InferAttributes, InferCreationAttributes, DataTypes, ForeignKey } from 'sequelize';
 import { sequelize } from "..";
+import Barbers from './Barbers';
 
 class Reviews extends Model<InferAttributes<Reviews>, InferCreationAttributes<Reviews>> {
   declare name: string;
   declare rating: number;
   declare review: string;
+  declare barber: ForeignKey<Barbers['name']>;
 }
+
+Reviews.belongsTo(Barbers, { targetKey: 'name' })
 
 Reviews.init({
   name: {
@@ -20,7 +24,7 @@ Reviews.init({
   review: {
     type: DataTypes.STRING,
     allowNull: true,
-  }
+  },
 }, {
   sequelize,
   modelName: 'reviews',

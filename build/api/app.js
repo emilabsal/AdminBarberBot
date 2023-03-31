@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const database_1 = require("../database");
+// import { sequelize } from '../database'
 const User_1 = __importDefault(require("../database/models/User"));
-const Journal_1 = __importDefault(require("../database/models/Journal"));
+const Clients_1 = __importDefault(require("../database/models/Clients"));
+const database_1 = require("../database");
 //initialize
-database_1.sequelize.sync();
 const app = (0, express_1.default)();
 //middleware
 app.use(express_1.default.json());
@@ -19,11 +19,12 @@ app.post('/users', (req, res) => {
         res.send('done');
     });
 });
-app.get('/clients', (req, res) => {
-    const journal = Journal_1.default.findAll({ raw: true });
-    res.send(journal);
+app.get('/reviews', (req, res) => {
+    const reviews = Clients_1.default.findAll({ raw: true });
+    res.send(reviews);
 });
 app.get('/', (req, res) => {
     res.send('hello');
 });
+database_1.sequelize.sync();
 app.listen(3000);

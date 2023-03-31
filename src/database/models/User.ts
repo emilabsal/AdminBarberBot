@@ -8,13 +8,17 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
 User.init({
   password: {
     type: DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   }
 }, {
   sequelize,
   modelName: 'user',
+  tableName: 'users',
   timestamps: false
 }
 )
+
+
 
 export default User
