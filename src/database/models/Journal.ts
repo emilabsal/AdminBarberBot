@@ -1,11 +1,11 @@
 import { Model, InferAttributes, InferCreationAttributes, DataTypes, ForeignKey, CreationOptional, NonAttribute } from 'sequelize';
 import { sequelize } from "..";
-import Clients from './Clients';
+import Client from './Client';
 
 class Journal extends Model<InferAttributes<Journal>, InferCreationAttributes<Journal>> {
   declare id: CreationOptional<number>
-  declare clientsId: ForeignKey<Clients['id']>; //первичный ключ связанной таблицы
-  declare clients?: NonAttribute<Clients>;
+  declare clientId: ForeignKey<Client['id']>; //первичный ключ связанной таблицы
+  declare client?: NonAttribute<Client>;
   declare createdAt: CreationOptional<Date>
 }
 
@@ -23,6 +23,5 @@ Journal.init({
   timestamps: true,
 })
 
-Journal.belongsTo(Clients, { targetKey: 'id' })
 
 export default Journal

@@ -10,7 +10,7 @@ import { menu } from './menu';
 import { sequelize } from '../database';
 import User from '../database/models/User';
 import Journal from '../database/models/Journal';
-import Clients from '../database/models/Clients';
+import Client from '../database/models/Client';
 
 type MyContext = Context & ConversationFlavor;
 type MyConversation = Conversation<MyContext>;
@@ -18,9 +18,9 @@ type MyConversation = Conversation<MyContext>;
 //Инициализация
 dotenv.config()
 const bot = new Bot<MyContext>(process.env.BOT_TOKEN);
-// sequelize.sync({ force: true })
-Journal.sync({ force: true })
-Clients.sync({ force: true })
+// sequelize.sync()
+// Journal.sync({ force: true })
+Client.sync({ force: true })
 
 
 

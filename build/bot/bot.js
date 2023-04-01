@@ -40,14 +40,13 @@ const grammy_1 = require("grammy");
 const conversations_1 = require("@grammyjs/conversations");
 const menu_1 = require("./menu");
 const User_1 = __importDefault(require("../database/models/User"));
-const Journal_1 = __importDefault(require("../database/models/Journal"));
-const Clients_1 = __importDefault(require("../database/models/Clients"));
+const Client_1 = __importDefault(require("../database/models/Client"));
 //Инициализация
 dotenv.config();
 const bot = new grammy_1.Bot(process.env.BOT_TOKEN);
-// sequelize.sync({ force: true })
-Journal_1.default.sync({ force: true });
-Clients_1.default.sync({ force: true });
+// sequelize.sync()
+// Journal.sync({ force: true })
+Client_1.default.sync({ force: true });
 //middleware
 bot.use((0, grammy_1.session)({ initial: () => ({}) }));
 bot.use((0, conversations_1.conversations)());
