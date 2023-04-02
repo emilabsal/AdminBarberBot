@@ -1,4 +1,4 @@
-import * as dotenv from 'dotenv'
+import * as dotenv from 'dotenv';
 import { Bot, Context, session } from "grammy";
 import {
   type Conversation,
@@ -13,8 +13,8 @@ type MyContext = Context & ConversationFlavor;
 type MyConversation = Conversation<MyContext>;
 
 //instance
-dotenv.config()
-const bot = new Bot<MyContext>('6062606978:AAG3Eawkchrnt2Qd8-6J5APiT5CvGqbjzMY');
+dotenv.config();
+const bot = new Bot<MyContext>(process.env.BOT_TOKEN!);
 
 //middleware
 bot.use(session({ initial: () => ({}) }));

@@ -31,7 +31,6 @@ model Journal {
   client    Client   @relation(fields: [clientId], references: [id])
   clientId  Int
   createdAt DateTime
-  // updatedAt DateTime
 }
 
 model Barber {
