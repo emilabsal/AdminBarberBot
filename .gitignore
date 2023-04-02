@@ -1,6 +1,5 @@
 node_modules
 .env
-node.md
-sequelize.md
-sqlite.md
+md
 notes.md
+prisma.md

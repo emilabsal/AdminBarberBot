@@ -7,44 +7,34 @@ import {
   createConversation,
 } from "@grammyjs/conversations";
 import { menu } from './menu';
-import { sequelize } from '../database';
-import User from '../database/models/User';
-import Journal from '../database/models/Journal';
-import Client from '../database/models/Client';
 
+//types
 type MyContext = Context & ConversationFlavor;
 type MyConversation = Conversation<MyContext>;
 
-//Инициализация
+//instance
 dotenv.config()
-const bot = new Bot<MyContext>(process.env.BOT_TOKEN);
-// sequelize.sync()
-// Journal.sync({ force: true })
-Client.sync({ force: true })
-
-
+const bot = new Bot<MyContext>('6062606978:AAG3Eawkchrnt2Qd8-6J5APiT5CvGqbjzMY');
 
 //middleware
 bot.use(session({ initial: () => ({}) }));
 bot.use(conversations());
 bot.use(menu);
 
-//Вход по паролю
-
+//password conversation
 async function writePassword(conversation: MyConversation, ctx: MyContext) {
-  const user = await User.findAll({ raw: true })
   const { message } = await conversation.waitFor('message:text')
 
-  if (message?.text !== user[0].password) {
+  if (message?.text !== 'Пароль') {
     await ctx.reply('Пароль неверен')
   } else {
     await ctx.reply('Навигация по crm системе', { reply_markup: menu })
   }
 }
-
 bot.use(createConversation(writePassword));
 
 
+//start
 bot.command("start", async (ctx) => {
   await ctx.reply(`Приветствую, напишите пароль для входа`, { parse_mode: 'HTML' })
   await ctx.conversation.enter("writePassword");
