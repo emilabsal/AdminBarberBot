@@ -7,41 +7,68 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//Модели
+//Пользователи системы
 model User {
-  id       Int    @id @default(autoincrement())
-  name     String
+  id       String @id @default(uuid())
+  name     String @unique
   password String
 }
 
-model Client {
-  id       Int       @id @default(autoincrement())
-  name     String
-  telegram String?
-  phone    Int?
-  journal  Journal[]
-}
-
-model Service {
-  id      Int    @id @default(autoincrement())
-  service String
-}
-
+//Журнал записей
 model Journal {
-  id        String   @id @default(uuid())
-  client    Client   @relation(fields: [clientId], references: [id])
-  clientId  Int
-  createdAt DateTime
+  id             String    @id @default(uuid())
+  client         Client?   @relation(fields: [clientName, clientTelegram, clientPhone], references: [name, telegram, phone])
+  clientName     String
+  clientTelegram String?
+  clientPhone    Int?
+  barber         Barber    @relation(fields: [barberId], references: [id])
+  barberId       String
+  service        Service[]
+  time           DateTime
+  createdAt      DateTime  @default(now())
 }
 
+//Клиенты
+model Client {
+  id       String    @id @default(uuid())
+  name     String
+  telegram String?   @unique
+  phone    Int?      @unique
+  journal  Journal[]
+  reviews  Review[]
+
+  @@unique([name, telegram, phone])
+  @@unique([name])
+}
+
+//Услуги
+model Service {
+  id      String    @id @default(uuid())
+  service String
+  price   Float
+  journal Journal[]
+}
+
+//Барберы
 model Barber {
-  id     Int    @id @default(autoincrement())
-  name   String
-  rating Int
+  id      String    @id @default(uuid())
+  name    String
+  text    String
+  rating  Int
+  journal Journal[]
+  reviews Review[]
+
+  @@unique([name])
 }
 
+//Отзывы
 model Review {
-  id     Int    @id @default(autoincrement())
-  client String
-  rating Int
-  text   String
+  id         String @id @default(uuid())
+  client     Client @relation(fields: [clientName], references: [name])
+  clientName String
+  rating     Int    @default(5)
+  text       String
+  barber     Barber @relation(fields: [barberName], references: [name])
+  barberName String
 }

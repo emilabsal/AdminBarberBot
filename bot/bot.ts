@@ -7,6 +7,8 @@ import {
   createConversation,
 } from "@grammyjs/conversations";
 import { menu } from './menu';
+import { getAdminPassword } from '../prisma';
+
 
 //types
 type MyContext = Context & ConversationFlavor;
@@ -24,6 +26,9 @@ bot.use(menu);
 //password conversation
 async function writePassword(conversation: MyConversation, ctx: MyContext) {
   const { message } = await conversation.waitFor('message:text')
+  const password = await getAdminPassword()
+  console.log(password);
+
 
   if (message?.text !== 'Пароль') {
     await ctx.reply('Пароль неверен')
