@@ -17,16 +17,16 @@ model User {
 
 //Журнал записей
 model Journal {
-  id             String    @id @default(uuid())
-  client         Client?   @relation(fields: [clientName, clientTelegram, clientPhone], references: [name, telegram, phone])
-  clientName     String
-  clientTelegram String?
-  clientPhone    Int?
-  barber         Barber    @relation(fields: [barberId], references: [id])
-  barberId       String
-  service        Service[]
-  time           DateTime
-  createdAt      DateTime  @default(now())
+  id          String    @id @default(uuid())
+  createdAt   DateTime  @default(now())
+  client      Client?   @relation(fields: [clientId], references: [id])
+  clientId    String
+  barber      Barber    @relation(fields: [barberId], references: [id])
+  barberId    String
+  service     Service[]
+  time        DateTime
+  address     Address   @relation(fields: [addressName], references: [address])
+  addressName String
 }
 
 //Клиенты
@@ -35,11 +35,8 @@ model Client {
   name     String
   telegram String?   @unique
   phone    Int?      @unique
-  journal  Journal[]
+  records  Journal[]
   reviews  Review[]
-
-  @@unique([name, telegram, phone])
-  @@unique([name])
 }
 
 //Услуги
@@ -47,7 +44,7 @@ model Service {
   id      String    @id @default(uuid())
   service String
   price   Float
-  journal Journal[]
+  records Journal[]
 }
 
 //Барберы
@@ -56,19 +53,24 @@ model Barber {
   name    String
   text    String
   rating  Int
-  journal Journal[]
+  records Journal[]
   reviews Review[]
-
-  @@unique([name])
 }
 
 //Отзывы
 model Review {
-  id         String @id @default(uuid())
-  client     Client @relation(fields: [clientName], references: [name])
-  clientName String
-  rating     Int    @default(5)
-  text       String
-  barber     Barber @relation(fields: [barberName], references: [name])
-  barberName String
+  id       String @id @default(uuid())
+  client   Client @relation(fields: [clientId], references: [id])
+  clientId String
+  rating   Int    @default(5)
+  text     String
+  barber   Barber @relation(fields: [barberId], references: [id])
+  barberId String
+}
+
+//Адрес
+model Address {
+  id      String    @id @default(uuid())
+  address String    @unique
+  journal Journal[]
 }

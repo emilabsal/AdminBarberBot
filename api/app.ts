@@ -2,7 +2,9 @@ import express from 'express'
 import { PrismaClient } from '@prisma/client'
 import clientsRoutes from './routes/clients'
 
+
 const prisma = new PrismaClient()
+
 
 //initialize
 const app = express()
@@ -22,8 +24,16 @@ app.get('/journal', async (req, res) => {
 })
 
 //routes
-app.get('/', (req, res) => {
-  res.send('hello')
+app.get('/', async (req, res) => {
+  const record = await prisma.journal.findMany({
+    where: {
+      id: 'c473d7a1-4358-4299-afa9-707539edb9d5'
+    },
+    include: {
+      client: true
+    }
+  })
+  res.json(record)
 })
 
 
